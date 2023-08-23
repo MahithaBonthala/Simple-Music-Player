@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <title></title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Poppins&family=Roboto:wght@300&display=swap');
+*{
+margin:0;  
+padding:0;
+box-sizing:border-box;
+}    
+
+body{
+background:#FF69B4;  
+font-family: 'Poppins', sans-serif;
+}
+
+.container{
+position:absolute; 
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+border-radius:7px;
+padding:30px 20px 30px 20px;
+width:340px;
+}
+
+.container .music-img{
+height:250px;  
+width:250px;
+margin:auto;
+border-radius:100%;
+margin-top:25px;
+}
+
+.container .music-title{
+text-align:center;      
+}
+
+.container .artist-name{
+text-align:center;
+color:grey;
+font-size:13px;
+margin-top:2px;
+}
+
+.container .music-img img{
+height:100%; 
+width:100%;
+border-radius:100%;
+box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.container .buttons{
+height:60px;   
+width:100%;
+margin-top:45px;
+}
+
+.container .buttons div{
+height:55px;
+width:55px;
+color:white;
+border-radius:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+float:left;
+font-size:27px;
+margin-left:35px;
+color:black;
+cursor:pointer;
+}
+
+.container .buttons .play-pause-btn{
+background:black;  
+color:white;
+cursor:pointer;
+}
+
+.container .buttons .play-pause-btn i{
+position:absolute;    
+font-size:18px;
+}
+
+.container .buttons .play-pause-btn .fa-pause{
+display:none;        
+}
+
+audio{
+display:none;       
+}
+
+.rotate-img{
+animation:animate 5s linear infinite;       
+}
+
+@keyframes animate{
+0%{
+ transform:rotate(0deg);    
+}100%{
+ transform:rotate(360deg);    
+}       
+}
+</style>       
+</head>
+
+<body>
+<div class="container">
+  <h3 class="music-title">Believer</h3> 
+  <p class="artist-name">Imagine Dragons</p>
+  <div class="music-img">
+      <img src="image1.jpg" alt="">    
+  </div>
+  <div class="buttons">
+     <div class="prev-btn">
+        <i class="fa-solid fa-backward"></i>   
+     </div>  
+     <div class="play-pause-btn play">
+        <i class="fa-solid fa-play"></i>
+        <i class="fa-solid fa-pause"></i>
+     </div>
+     <div class="next-btn">
+        <i class="fa-solid fa-forward"></i>     
+     </div>
+  </div>
+</div>
+<audio src="" id="music"></audio>
+<script src="Data.js"></script>
+<script>
+let musicTitle = document.querySelector('.container .music-title');
+let artistName = document.querySelector('.container .artist-name');
+let musicImg = document.querySelector('.container .music-img img');
+let prevBtn = document.querySelector('.container .prev-btn');
+let nextBtn = document.querySelector('.container .next-btn');
+let playPauseBtn = document.querySelector('.container .play-pause-btn');
+let playIcon = document.querySelector('.container .play-pause-btn .fa-play');
+let pauseIcon = document.querySelector('.container .play-pause-btn .fa-pause');
+let music = document.querySelector('#music');
+let nextMusicBtn = document.querySelector('.container .next-btn');
+let prevMusicBtn = document.querySelector('.container .prev-btn');
+
+let musicIndex = 2;
+
+let loadMusic = (musicIndex)=>{
+  musicTitle.innerHTML = `${allmusic[musicIndex - 1].name}`;  
+  artistName.innerHTML = `${allmusic[musicIndex - 1].artist}`;
+  musicImg.src = `${allmusic[musicIndex - 1].img}.jpg`;
+  music.src = `${allmusic[musicIndex - 1].src}.mp3`;
+}
+
+playPauseBtn.addEventListener('click',()=>{
+  if(playPauseBtn.classList.contains('play')){
+     playPauseBtn.classList.remove('play');
+     playIcon.style.display = 'none';
+     pauseIcon.style.display = 'block';
+     musicImg.classList.add('rotate-img');
+     music.play();
+  }else{
+     playPauseBtn.classList.add('play');
+     playIcon.style.display = 'block';
+     pauseIcon.style.display = 'none';  
+     musicImg.classList.remove('rotate-img');
+     music.pause();
+  }
+})
+
+nextMusicBtn.addEventListener('click',()=>{
+  musicIndex++;      
+  musicIndex > allmusic.length ? musicIndex = 1 : musicIndex = musicIndex; 
+  loadMusic(musicIndex);
+  music.pause();
+  playIcon.style.display = 'block';
+  pauseIcon.style.display = 'none';
+  musicImg.classList.remove('rotate-img');
+});
+
+prevMusicBtn.addEventListener('click',()=>{
+  musicIndex--;
+  musicIndex < 1 ? musicIndex = allmusic.length : musicIndex = musicIndex;
+  loadMusic(musicIndex);
+  music.pause();
+  playIcon.style.display = 'block';
+  pauseIcon.style.display = 'none';  
+  musicImg.classList.remove('rotate-img');
+})
+
+loadMusic(musicIndex);
+</script>
+</body>
+
+</html>
